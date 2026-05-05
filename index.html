@@ -245,18 +245,14 @@
   </div>
 </div>
 
-<!-- Flip Again bar -->
-<div id="flipAgain" style="
-  text-align:center; padding:14px 16px;
-  font-size:13px; font-weight:700;
-  color:#1558d6; letter-spacing:1px;
-  cursor:pointer; border-bottom:1px solid #e8eaed;
-  background:#fff; font-family:arial,sans-serif;
-  min-height:48px; display:flex; align-items:center; justify-content:center;
-">FLIP AGAIN</div>
+<!-- Flip Again screenshot (clickable) -->
+<div style="position:relative; line-height:0;">
+  <img style="width:100%; display:block;" src="bottom-flipagain.jpg" alt="Flip Again">
+  <div id="flipAgain" style="position:absolute;top:0;left:0;right:0;bottom:0;cursor:pointer;"></div>
+</div>
 
-<!-- Bottom screenshot -->
-<img style="width:100%; display:block;" src="google-bottom.jpg" alt="Google Bottom">
+<!-- Tools screenshot (no gap) -->
+<img style="width:100%; display:block;" src="bottom-tools.jpg" alt="Tools">
 
 <script>
   const coin = document.getElementById('coin');
