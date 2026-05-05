@@ -59,18 +59,20 @@
   .coin-container.tilt-9pm {
     animation: tilt9pm 1.8s ease-in-out forwards;
   }
+  /* 1 o'clock = tilt top-right down, bottom-left up */
   @keyframes tilt3pm {
     0%   { transform: rotateX(0deg) rotateZ(0deg); }
-    15%  { transform: rotateX(-15deg) rotateZ(3deg); }
-    50%  { transform: rotateX(15deg) rotateZ(-3deg); }
-    85%  { transform: rotateX(-8deg) rotateZ(1deg); }
+    15%  { transform: rotateX(-12deg) rotateZ(-8deg); }
+    50%  { transform: rotateX(12deg) rotateZ(8deg); }
+    85%  { transform: rotateX(-6deg) rotateZ(-4deg); }
     100% { transform: rotateX(0deg) rotateZ(0deg); }
   }
+  /* 11 o'clock = tilt top-left down, bottom-right up */
   @keyframes tilt9pm {
     0%   { transform: rotateX(0deg) rotateZ(0deg); }
-    15%  { transform: rotateX(15deg) rotateZ(-3deg); }
-    50%  { transform: rotateX(-15deg) rotateZ(3deg); }
-    85%  { transform: rotateX(8deg) rotateZ(-1deg); }
+    15%  { transform: rotateX(-12deg) rotateZ(8deg); }
+    50%  { transform: rotateX(12deg) rotateZ(-8deg); }
+    85%  { transform: rotateX(-6deg) rotateZ(4deg); }
     100% { transform: rotateX(0deg) rotateZ(0deg); }
   }
   .coin-sprite {
