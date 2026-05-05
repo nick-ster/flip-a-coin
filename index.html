@@ -282,9 +282,6 @@
     isFlipping = true;
 
     coinLabel.classList.remove('visible');
-    flipAgainBtn.textContent = 'FLIPPING...';
-    flipAgainBtn.style.color = '#5f6368';
-    flipAgainBtn.style.fontWeight = '400';
 
     const animClass = flipDirection === 1 ? 'flipping-forward' : 'flipping-reverse';
     flipDirection *= -1;
@@ -305,9 +302,7 @@
     setTimeout(() => {
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
       coinLabel.classList.add('visible');
-      flipAgainBtn.textContent = 'FLIP AGAIN';
-      flipAgainBtn.style.color = '#1558d6';
-      flipAgainBtn.style.fontWeight = '700';
+
       coin.classList.remove('flipping-forward', 'flipping-reverse');
       isFlipping = false;
     }, 1400);
