@@ -58,15 +58,78 @@
     height: 2699px;
     display: block;
   }
-  .coin-sprite.flipping-forward {
-    animation: coinFlipForward 1.4s steps(1) none;
+  .coin-sprite.flip-fwd-heads {
+    animation: flipFwdHeads 1.4s steps(1) forwards;
   }
-  .coin-sprite.flipping-reverse {
-    animation: coinFlipReverse 1.4s steps(1) none;
+  .coin-sprite.flip-fwd-tails {
+    animation: flipFwdTails 1.4s steps(1) forwards;
+  }
+  .coin-sprite.flip-rev-heads {
+    animation: flipRevHeads 1.4s steps(1) forwards;
+  }
+  .coin-sprite.flip-rev-tails {
+    animation: flipRevTails 1.4s steps(1) forwards;
   }
 
-  /* 3 full cycles forward */
-  @keyframes coinFlipForward {
+  /* Helper macro: one full forward cycle = 18 frames */
+  /* Frame y values: 0, -150, -300, ..., -2549 */
+  /* Heads resting = y:0 | Tails resting = y:-1349 */
+
+  /* Forward → Heads (ends at y:0) */
+  @keyframes flipFwdHeads {
+    0%     { transform: translateY(0px); }
+    1.85%  { transform: translateY(-150px); }
+    3.7%   { transform: translateY(-300px); }
+    5.55%  { transform: translateY(-450px); }
+    7.4%   { transform: translateY(-600px); }
+    9.25%  { transform: translateY(-750px); }
+    11.1%  { transform: translateY(-900px); }
+    12.95% { transform: translateY(-1050px); }
+    14.8%  { transform: translateY(-1200px); }
+    16.65% { transform: translateY(-1349px); }
+    18.5%  { transform: translateY(-1499px); }
+    20.35% { transform: translateY(-1649px); }
+    22.2%  { transform: translateY(-1799px); }
+    24.05% { transform: translateY(-1949px); }
+    25.9%  { transform: translateY(-2099px); }
+    27.75% { transform: translateY(-2249px); }
+    29.6%  { transform: translateY(-2399px); }
+    31.45% { transform: translateY(-2549px); }
+    /* cycle 2 */
+    33.3%  { transform: translateY(0px); }
+    35.15% { transform: translateY(-150px); }
+    37%    { transform: translateY(-300px); }
+    38.85% { transform: translateY(-450px); }
+    40.7%  { transform: translateY(-600px); }
+    42.55% { transform: translateY(-750px); }
+    44.4%  { transform: translateY(-900px); }
+    46.25% { transform: translateY(-1050px); }
+    48.1%  { transform: translateY(-1200px); }
+    49.95% { transform: translateY(-1349px); }
+    51.8%  { transform: translateY(-1499px); }
+    53.65% { transform: translateY(-1649px); }
+    55.5%  { transform: translateY(-1799px); }
+    57.35% { transform: translateY(-1949px); }
+    59.2%  { transform: translateY(-2099px); }
+    61.05% { transform: translateY(-2249px); }
+    62.9%  { transform: translateY(-2399px); }
+    64.75% { transform: translateY(-2549px); }
+    /* cycle 3 — slower, land on heads (y:0) */
+    66.6%  { transform: translateY(0px); }
+    70%    { transform: translateY(-150px); }
+    73.4%  { transform: translateY(-300px); }
+    76.8%  { transform: translateY(-450px); }
+    80.2%  { transform: translateY(-600px); }
+    83.6%  { transform: translateY(-750px); }
+    87%    { transform: translateY(-900px); }
+    90.4%  { transform: translateY(-1050px); }
+    93.8%  { transform: translateY(-1200px); }
+    97.2%  { transform: translateY(-1349px); }
+    100%   { transform: translateY(0px); }
+  }
+
+  /* Forward → Tails (ends at y:-1349) */
+  @keyframes flipFwdTails {
     0%     { transform: translateY(0px); }
     1.85%  { transform: translateY(-150px); }
     3.7%   { transform: translateY(-300px); }
@@ -103,72 +166,119 @@
     61.05% { transform: translateY(-2249px); }
     62.9%  { transform: translateY(-2399px); }
     64.75% { transform: translateY(-2549px); }
+    /* cycle 3 — land on tails (y:-1349) */
     66.6%  { transform: translateY(0px); }
-    69.5%  { transform: translateY(-150px); }
-    72.4%  { transform: translateY(-300px); }
-    75.3%  { transform: translateY(-450px); }
-    78.2%  { transform: translateY(-600px); }
-    81.1%  { transform: translateY(-750px); }
-    84%    { transform: translateY(-900px); }
-    86.9%  { transform: translateY(-1050px); }
-    89.8%  { transform: translateY(-1200px); }
-    92.7%  { transform: translateY(-1349px); }
-    95.6%  { transform: translateY(-1499px); }
-    98.5%  { transform: translateY(-150px); }
+    70%    { transform: translateY(-150px); }
+    73.4%  { transform: translateY(-300px); }
+    76.8%  { transform: translateY(-450px); }
+    80.2%  { transform: translateY(-600px); }
+    83.6%  { transform: translateY(-750px); }
+    87%    { transform: translateY(-900px); }
+    90.4%  { transform: translateY(-1050px); }
+    93.8%  { transform: translateY(-1200px); }
+    100%   { transform: translateY(-1349px); }
+  }
+
+  /* Reverse → Heads (ends at y:0) */
+  @keyframes flipRevHeads {
+    0%     { transform: translateY(-1349px); }
+    1.85%  { transform: translateY(-1499px); }
+    3.7%   { transform: translateY(-1649px); }
+    5.55%  { transform: translateY(-1799px); }
+    7.4%   { transform: translateY(-1949px); }
+    9.25%  { transform: translateY(-2099px); }
+    11.1%  { transform: translateY(-2249px); }
+    12.95% { transform: translateY(-2399px); }
+    14.8%  { transform: translateY(-2549px); }
+    16.65% { transform: translateY(0px); }
+    18.5%  { transform: translateY(-150px); }
+    20.35% { transform: translateY(-300px); }
+    22.2%  { transform: translateY(-450px); }
+    24.05% { transform: translateY(-600px); }
+    25.9%  { transform: translateY(-750px); }
+    27.75% { transform: translateY(-900px); }
+    29.6%  { transform: translateY(-1050px); }
+    31.45% { transform: translateY(-1200px); }
+    33.3%  { transform: translateY(-1349px); }
+    35.15% { transform: translateY(-1499px); }
+    37%    { transform: translateY(-1649px); }
+    38.85% { transform: translateY(-1799px); }
+    40.7%  { transform: translateY(-1949px); }
+    42.55% { transform: translateY(-2099px); }
+    44.4%  { transform: translateY(-2249px); }
+    46.25% { transform: translateY(-2399px); }
+    48.1%  { transform: translateY(-2549px); }
+    49.95% { transform: translateY(0px); }
+    51.8%  { transform: translateY(-150px); }
+    53.65% { transform: translateY(-300px); }
+    55.5%  { transform: translateY(-450px); }
+    57.35% { transform: translateY(-600px); }
+    59.2%  { transform: translateY(-750px); }
+    61.05% { transform: translateY(-900px); }
+    62.9%  { transform: translateY(-1050px); }
+    64.75% { transform: translateY(-1200px); }
+    /* cycle 3 — land on heads */
+    66.6%  { transform: translateY(-1349px); }
+    70%    { transform: translateY(-1499px); }
+    73.4%  { transform: translateY(-1649px); }
+    76.8%  { transform: translateY(-1799px); }
+    80.2%  { transform: translateY(-1949px); }
+    83.6%  { transform: translateY(-2099px); }
+    87%    { transform: translateY(-2249px); }
+    90.4%  { transform: translateY(-2399px); }
+    93.8%  { transform: translateY(-2549px); }
     100%   { transform: translateY(0px); }
   }
 
-  /* 3 full cycles reverse */
-  @keyframes coinFlipReverse {
-    0%     { transform: translateY(-2549px); }
-    1.85%  { transform: translateY(-2399px); }
-    3.7%   { transform: translateY(-2249px); }
-    5.55%  { transform: translateY(-2099px); }
-    7.4%   { transform: translateY(-1949px); }
-    9.25%  { transform: translateY(-1799px); }
-    11.1%  { transform: translateY(-1649px); }
-    12.95% { transform: translateY(-1499px); }
-    14.8%  { transform: translateY(-1349px); }
-    16.65% { transform: translateY(-1200px); }
-    18.5%  { transform: translateY(-1050px); }
-    20.35% { transform: translateY(-900px); }
-    22.2%  { transform: translateY(-750px); }
-    24.05% { transform: translateY(-600px); }
-    25.9%  { transform: translateY(-450px); }
-    27.75% { transform: translateY(-300px); }
-    29.6%  { transform: translateY(-150px); }
-    31.45% { transform: translateY(0px); }
-    33.3%  { transform: translateY(-2549px); }
-    35.15% { transform: translateY(-2399px); }
-    37%    { transform: translateY(-2249px); }
-    38.85% { transform: translateY(-2099px); }
-    40.7%  { transform: translateY(-1949px); }
-    42.55% { transform: translateY(-1799px); }
-    44.4%  { transform: translateY(-1649px); }
-    46.25% { transform: translateY(-1499px); }
-    48.1%  { transform: translateY(-1349px); }
-    49.95% { transform: translateY(-1200px); }
-    51.8%  { transform: translateY(-1050px); }
-    53.65% { transform: translateY(-900px); }
-    55.5%  { transform: translateY(-750px); }
-    57.35% { transform: translateY(-600px); }
-    59.2%  { transform: translateY(-450px); }
-    61.05% { transform: translateY(-300px); }
-    62.9%  { transform: translateY(-150px); }
-    64.75% { transform: translateY(0px); }
-    66.6%  { transform: translateY(-2549px); }
-    69.5%  { transform: translateY(-2399px); }
-    72.4%  { transform: translateY(-2249px); }
-    75.3%  { transform: translateY(-2099px); }
-    78.2%  { transform: translateY(-1949px); }
-    81.1%  { transform: translateY(-1799px); }
-    84%    { transform: translateY(-1649px); }
-    86.9%  { transform: translateY(-1499px); }
-    89.8%  { transform: translateY(-1349px); }
-    92.7%  { transform: translateY(-1200px); }
-    95.6%  { transform: translateY(-1050px); }
-    98.5%  { transform: translateY(-2399px); }
-    100%   { transform: translateY(-2549px); }
+  /* Reverse → Tails (ends at y:-1349) */
+  @keyframes flipRevTails {
+    0%     { transform: translateY(0px); }
+    1.85%  { transform: translateY(-2549px); }
+    3.7%   { transform: translateY(-2399px); }
+    5.55%  { transform: translateY(-2249px); }
+    7.4%   { transform: translateY(-2099px); }
+    9.25%  { transform: translateY(-1949px); }
+    11.1%  { transform: translateY(-1799px); }
+    12.95% { transform: translateY(-1649px); }
+    14.8%  { transform: translateY(-1499px); }
+    16.65% { transform: translateY(-1349px); }
+    18.5%  { transform: translateY(-1200px); }
+    20.35% { transform: translateY(-1050px); }
+    22.2%  { transform: translateY(-900px); }
+    24.05% { transform: translateY(-750px); }
+    25.9%  { transform: translateY(-600px); }
+    27.75% { transform: translateY(-450px); }
+    29.6%  { transform: translateY(-300px); }
+    31.45% { transform: translateY(-150px); }
+    33.3%  { transform: translateY(0px); }
+    35.15% { transform: translateY(-2549px); }
+    37%    { transform: translateY(-2399px); }
+    38.85% { transform: translateY(-2249px); }
+    40.7%  { transform: translateY(-2099px); }
+    42.55% { transform: translateY(-1949px); }
+    44.4%  { transform: translateY(-1799px); }
+    46.25% { transform: translateY(-1649px); }
+    48.1%  { transform: translateY(-1499px); }
+    49.95% { transform: translateY(-1349px); }
+    51.8%  { transform: translateY(-1200px); }
+    53.65% { transform: translateY(-1050px); }
+    55.5%  { transform: translateY(-900px); }
+    57.35% { transform: translateY(-750px); }
+    59.2%  { transform: translateY(-600px); }
+    61.05% { transform: translateY(-450px); }
+    62.9%  { transform: translateY(-300px); }
+    64.75% { transform: translateY(-150px); }
+    /* cycle 3 — land on tails */
+    66.6%  { transform: translateY(0px); }
+    70%    { transform: translateY(-2549px); }
+    73.4%  { transform: translateY(-2399px); }
+    76.8%  { transform: translateY(-2249px); }
+    80.2%  { transform: translateY(-2099px); }
+    83.6%  { transform: translateY(-1949px); }
+    87%    { transform: translateY(-1799px); }
+    90.4%  { transform: translateY(-1649px); }
+    93.8%  { transform: translateY(-1499px); }
+    100%   { transform: translateY(-1349px); }
   }
 
   .coin-label {
@@ -308,17 +418,17 @@
     coinLabel.classList.remove('visible');
     flipAgainImg.src = 'bottom-flipping.jpg';
 
-    const animClass = flipDirection === 1 ? 'flipping-forward' : 'flipping-reverse';
+    const dir = flipDirection === 1 ? 'fwd' : 'rev';
     flipDirection *= -1;
+    const animClass = `flip-${dir}-${result}`;
 
-    coin.classList.remove('flipping-forward', 'flipping-reverse');
+    coin.classList.remove('flip-fwd-heads','flip-fwd-tails','flip-rev-heads','flip-rev-tails');
     coin.style.transform = '';
     void coin.offsetWidth;
     coin.classList.add(animClass);
 
     setTimeout(() => {
-      coin.classList.remove('flipping-forward', 'flipping-reverse');
-      coin.style.transform = result === 'heads' ? 'translateY(0px)' : 'translateY(-1349px)';
+      // Animation already ends on correct frame via forwards fill — no snap needed
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
       coinLabel.classList.add('visible');
       flipAgainImg.src = 'bottom-flipagain.jpg';
