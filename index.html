@@ -53,6 +53,26 @@
     position: relative;
     overflow: hidden;
   }
+  .coin-container.tilt-3pm {
+    animation: tilt3pm 1.8s ease-in-out forwards;
+  }
+  .coin-container.tilt-9pm {
+    animation: tilt9pm 1.8s ease-in-out forwards;
+  }
+  @keyframes tilt3pm {
+    0%   { transform: rotateX(0deg) rotateZ(0deg); }
+    15%  { transform: rotateX(-15deg) rotateZ(3deg); }
+    50%  { transform: rotateX(15deg) rotateZ(-3deg); }
+    85%  { transform: rotateX(-8deg) rotateZ(1deg); }
+    100% { transform: rotateX(0deg) rotateZ(0deg); }
+  }
+  @keyframes tilt9pm {
+    0%   { transform: rotateX(0deg) rotateZ(0deg); }
+    15%  { transform: rotateX(15deg) rotateZ(-3deg); }
+    50%  { transform: rotateX(-15deg) rotateZ(3deg); }
+    85%  { transform: rotateX(8deg) rotateZ(-1deg); }
+    100% { transform: rotateX(0deg) rotateZ(0deg); }
+  }
   .coin-sprite {
     width: 150px;
     height: 2699px;
@@ -482,13 +502,17 @@
     flipAgainImg.src = 'bottom-flipping.jpg';
 
     const dir = flipDirection === 1 ? 'fwd' : 'rev';
+    const tilt = flipDirection === 1 ? 'tilt-3pm' : 'tilt-9pm';
     flipDirection *= -1;
     const animClass = `flip-${dir}-${result}`;
 
+    const container = document.querySelector('.coin-container');
     coin.classList.remove('flip-fwd-heads','flip-fwd-tails','flip-rev-heads','flip-rev-tails');
+    container.classList.remove('tilt-3pm','tilt-9pm');
     coin.style.transform = '';
     void coin.offsetWidth;
     coin.classList.add(animClass);
+    container.classList.add(tilt);
 
     setTimeout(() => {
       // Animation already ends on correct frame via forwards fill — no snap needed
