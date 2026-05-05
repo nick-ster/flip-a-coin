@@ -45,82 +45,67 @@
     position: relative;
     transform-style: preserve-3d;
   }
+  /* Google sprite-sheet coin — exact replica */
   .coin-container {
-    perspective: 600px;
-    width: 160px; height: 160px;
-  }
-  .coin {
-    width: 160px; height: 160px;
+    width: 150px; height: 150px;
+    margin: 0 auto 14px;
     position: relative;
-    transform-style: preserve-3d;
+    overflow: hidden;
   }
-  .coin.flipping-forward {
-    animation: coinFlipForward 1.4s ease-in-out forwards;
+  .coin-sprite {
+    width: 150px;
+    height: 2699px;
+    display: block;
   }
-  .coin.flipping-reverse {
-    animation: coinFlipReverse 1.4s ease-in-out forwards;
+  .coin-sprite.flipping-forward {
+    animation: coinFlipForward 1.0s steps(1) forwards;
   }
+  .coin-sprite.flipping-reverse {
+    animation: coinFlipReverse 1.0s steps(1) forwards;
+  }
+  /* 18 frames, each 150px — forward (top→bottom) */
   @keyframes coinFlipForward {
-    0%   { transform: rotateY(0deg)    rotateX(0deg); }
-    15%  { transform: rotateY(360deg)  rotateX(54deg); }
-    30%  { transform: rotateY(720deg)  rotateX(108deg); }
-    45%  { transform: rotateY(1080deg) rotateX(162deg); }
-    50%  { transform: rotateY(1260deg) rotateX(180deg); }
-    65%  { transform: rotateY(1440deg) rotateX(234deg); }
-    80%  { transform: rotateY(1800deg) rotateX(288deg); }
-    90%  { transform: rotateY(2040deg) rotateX(324deg); }
-    100% { transform: rotateY(2160deg) rotateX(360deg); }
+    0%    { transform: translateY(0px); }
+    5.5%  { transform: translateY(-150px); }
+    11%   { transform: translateY(-300px); }
+    16.5% { transform: translateY(-450px); }
+    22%   { transform: translateY(-600px); }
+    27.5% { transform: translateY(-750px); }
+    33%   { transform: translateY(-900px); }
+    38.5% { transform: translateY(-1050px); }
+    44%   { transform: translateY(-1200px); }
+    50%   { transform: translateY(-1349px); }
+    55.5% { transform: translateY(-1499px); }
+    61%   { transform: translateY(-1649px); }
+    66.5% { transform: translateY(-1799px); }
+    72%   { transform: translateY(-1949px); }
+    77.5% { transform: translateY(-2099px); }
+    83%   { transform: translateY(-2249px); }
+    88.5% { transform: translateY(-2399px); }
+    94%   { transform: translateY(-2549px); }
+    100%  { transform: translateY(-2549px); }
   }
+  /* Reverse — bottom→top */
   @keyframes coinFlipReverse {
-    0%   { transform: rotateY(0deg)     rotateX(0deg); }
-    15%  { transform: rotateY(-360deg)  rotateX(54deg); }
-    30%  { transform: rotateY(-720deg)  rotateX(108deg); }
-    45%  { transform: rotateY(-1080deg) rotateX(162deg); }
-    50%  { transform: rotateY(-1260deg) rotateX(180deg); }
-    65%  { transform: rotateY(-1440deg) rotateX(234deg); }
-    80%  { transform: rotateY(-1800deg) rotateX(288deg); }
-    90%  { transform: rotateY(-2040deg) rotateX(324deg); }
-    100% { transform: rotateY(-2160deg) rotateX(360deg); }
-  }
-
-  /* Front face */
-  .coin-front {
-    position: absolute; width: 160px; height: 160px;
-    border-radius: 50%; overflow: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(8px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  .coin-front img {
-    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
-  }
-
-  /* Back face */
-  .coin-back {
-    position: absolute; width: 160px; height: 160px;
-    border-radius: 50%; overflow: hidden;
-    backface-visibility: hidden;
-    transform: rotateY(180deg) translateZ(8px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  .coin-back img {
-    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
-    transform: scaleX(-1); /* mirror so it reads correctly from back */
-  }
-
-  /* Edge — built from thin segments forming a cylinder */
-  .coin-edge-wrap {
-    position: absolute; width: 160px; height: 160px;
-    transform-style: preserve-3d;
-    top: 0; left: 0;
-  }
-  .coin-edge-seg {
-    position: absolute;
-    width: 16px; /* thickness of coin */
-    height: 4px; /* height of each segment */
-    background: linear-gradient(to bottom, #e0e0e0, #aaa, #e0e0e0);
-    left: 50%; top: 50%;
-    transform-origin: left center;
+    0%    { transform: translateY(-2549px); }
+    5.5%  { transform: translateY(-2399px); }
+    11%   { transform: translateY(-2249px); }
+    16.5% { transform: translateY(-2099px); }
+    22%   { transform: translateY(-1949px); }
+    27.5% { transform: translateY(-1799px); }
+    33%   { transform: translateY(-1649px); }
+    38.5% { transform: translateY(-1499px); }
+    44%   { transform: translateY(-1349px); }
+    50%   { transform: translateY(-1200px); }
+    55.5% { transform: translateY(-1050px); }
+    61%   { transform: translateY(-900px); }
+    66.5% { transform: translateY(-750px); }
+    72%   { transform: translateY(-600px); }
+    77.5% { transform: translateY(-450px); }
+    83%   { transform: translateY(-300px); }
+    88.5% { transform: translateY(-150px); }
+    94%   { transform: translateY(0px); }
+    100%  { transform: translateY(0px); }
   }
 
   .coin-label {
@@ -223,18 +208,7 @@
 <!-- Coin area -->
 <div class="coin-area" id="coinArea">
   <div class="coin-container">
-    <div class="coin" id="coin">
-      <!-- Front face -->
-      <div class="coin-front">
-        <img id="coinFront" src="heads.jpg" alt="Heads">
-      </div>
-      <!-- Back face -->
-      <div class="coin-back">
-        <img id="coinBack" src="tails.jpg" alt="Tails">
-      </div>
-      <!-- Edge segments -->
-      <div class="coin-edge-wrap" id="edgeWrap"></div>
-    </div>
+    <img class="coin-sprite" id="coin" src="coin_sheet.png" alt="coin">
   </div>
   <div class="coin-label" id="coinLabel">Heads</div>
 
@@ -257,26 +231,10 @@
 <script>
   const coin = document.getElementById('coin');
   const coinLabel = document.getElementById('coinLabel');
-  const coinFront = document.getElementById('coinFront');
-  const coinBack = document.getElementById('coinBack');
   const flipAgainBtn = document.getElementById('flipAgain');
   const flipAgainImg = document.getElementById('flipAgainImg');
   let isFlipping = false;
   let flipDirection = 1;
-
-  // Build edge segments
-  const edgeWrap = document.getElementById('edgeWrap');
-  const SEGS = 60;
-  const R = 80; // radius
-  const THICKNESS = 16;
-  for (let i = 0; i < SEGS; i++) {
-    const angle = (i / SEGS) * 360;
-    const rad = (angle * Math.PI) / 180;
-    const seg = document.createElement('div');
-    seg.className = 'coin-edge-seg';
-    seg.style.transform = `rotate(${angle}deg) translateX(${R - THICKNESS/2}px) translateY(-2px)`;
-    edgeWrap.appendChild(seg);
-  }
 
   function flip(result) {
     if (isFlipping) return;
@@ -289,27 +247,20 @@
     flipDirection *= -1;
 
     coin.classList.remove('flipping-forward', 'flipping-reverse');
+    coin.style.transform = '';
     void coin.offsetWidth;
     coin.classList.add(animClass);
 
-    // Set front/back correctly for result
-    if (result === 'heads') {
-      coinFront.src = 'heads.jpg';
-      coinBack.src = 'tails.jpg';
-    } else {
-      coinFront.src = 'tails.jpg';
-      coinBack.src = 'heads.jpg';
-    }
-
     setTimeout(() => {
+      coin.classList.remove('flipping-forward', 'flipping-reverse');
+      coin.style.transform = `translateY(${result === 'heads' ? '0px' : '-2549px'})`;
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
       coinLabel.classList.add('visible');
       flipAgainImg.src = 'bottom-flipagain.jpg';
-
-      coin.classList.remove('flipping-forward', 'flipping-reverse');
       isFlipping = false;
-    }, 1400);
+    }, 1000);
   }
+
 
   document.getElementById('zoneHeads').addEventListener('click', () => flip('heads'));
   document.getElementById('zoneTails').addEventListener('click', () => flip('tails'));
