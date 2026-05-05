@@ -45,14 +45,33 @@
     position: relative;
     transform-style: preserve-3d;
   }
-  .coin.flipping {
-    animation: coinFlip 0.85s ease forwards;
+  .coin.flipping-forward {
+    animation: coinFlipForward 0.9s cubic-bezier(0.4,0,0.2,1) forwards;
   }
-  @keyframes coinFlip {
-    0%   { transform: rotateY(0deg); }
-    30%  { transform: rotateY(600deg) scale(1.08); }
-    70%  { transform: rotateY(1080deg) scale(1.08); }
-    100% { transform: rotateY(1440deg) scale(1); }
+  .coin.flipping-reverse {
+    animation: coinFlipReverse 0.9s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  @keyframes coinFlipForward {
+    0%   { transform: rotateY(0deg) scaleY(1); }
+    15%  { transform: rotateY(90deg) scaleY(0.8); }
+    30%  { transform: rotateY(180deg) scaleY(1); }
+    45%  { transform: rotateY(270deg) scaleY(0.8); }
+    60%  { transform: rotateY(360deg) scaleY(1); }
+    75%  { transform: rotateY(450deg) scaleY(0.85); }
+    88%  { transform: rotateY(520deg) scaleY(1); }
+    94%  { transform: rotateY(540deg) scaleY(0.97); }
+    100% { transform: rotateY(540deg) scaleY(1); }
+  }
+  @keyframes coinFlipReverse {
+    0%   { transform: rotateY(0deg) scaleY(1); }
+    15%  { transform: rotateY(-90deg) scaleY(0.8); }
+    30%  { transform: rotateY(-180deg) scaleY(1); }
+    45%  { transform: rotateY(-270deg) scaleY(0.8); }
+    60%  { transform: rotateY(-360deg) scaleY(1); }
+    75%  { transform: rotateY(-450deg) scaleY(0.85); }
+    88%  { transform: rotateY(-520deg) scaleY(1); }
+    94%  { transform: rotateY(-540deg) scaleY(0.97); }
+    100% { transform: rotateY(-540deg) scaleY(1); }
   }
 
   .coin-face {
@@ -179,41 +198,64 @@
   </div>
 </div>
 
-<!-- Bottom screenshot — top portion acts as "Flip Again" -->
-<div style="position:relative;">
-  <img style="width:100%; display:block;" src="google-bottom.jpg" alt="Google Bottom">
-  <!-- Invisible clickable zone over "FLIP AGAIN" text in the image -->
-  <div id="flipAgain" style="
-    position:absolute; top:0; left:0; right:0; height:48px;
-    cursor:pointer;
-  "></div>
-</div>
+<!-- Flip Again bar -->
+<div id="flipAgain" style="
+  text-align:center; padding:14px 16px;
+  font-size:13.5px; font-weight:500;
+  color:#1a73e8; letter-spacing:0.8px;
+  cursor:pointer; border-bottom:1px solid #e8eaed;
+  background:#fff; font-family:arial,sans-serif;
+  min-height:48px; display:flex; align-items:center; justify-content:center;
+">FLIP AGAIN</div>
+
+<!-- Bottom screenshot -->
+<img style="width:100%; display:block;" src="google-bottom.jpg" alt="Google Bottom">
 
 <script>
   const coin = document.getElementById('coin');
   const coinLabel = document.getElementById('coinLabel');
   const coinImg = document.getElementById('coinImg');
+  const flipAgainBtn = document.getElementById('flipAgain');
   let isFlipping = false;
+  let flipDirection = 1; // alternates each flip
 
   function flip(result) {
     if (isFlipping) return;
     isFlipping = true;
-    coin.classList.remove('flipping');
+
+    // Show "Flipping..."
+    coinLabel.textContent = 'Flipping...';
+    flipAgainBtn.textContent = 'Flipping...';
+
+    // Alternate direction
+    const animClass = flipDirection === 1 ? 'flipping-forward' : 'flipping-reverse';
+    flipDirection *= -1;
+
+    coin.classList.remove('flipping-forward', 'flipping-reverse');
     void coin.offsetWidth;
-    coin.classList.add('flipping');
+    coin.classList.add(animClass);
+
+    // Swap image at midpoint
     setTimeout(() => {
       coinImg.src = result === 'heads' ? 'heads.jpg' : 'tails.jpg';
+    }, 450);
+
+    setTimeout(() => {
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
-      coin.classList.remove('flipping');
+      flipAgainBtn.textContent = 'FLIP AGAIN';
+      coin.classList.remove('flipping-forward', 'flipping-reverse');
       isFlipping = false;
-    }, 850);
+    }, 900);
   }
 
   document.getElementById('zoneHeads').addEventListener('click', () => flip('heads'));
   document.getElementById('zoneTails').addEventListener('click', () => flip('tails'));
-  document.getElementById('flipAgain').addEventListener('click', () => {
+  flipAgainBtn.addEventListener('click', () => {
     flip(Math.random() < 0.5 ? 'heads' : 'tails');
   });
+
+  // Auto-flip on open
+  setTimeout(() => flip(Math.random() < 0.5 ? 'heads' : 'tails'), 300);
 </script>
 </body>
 </html>
