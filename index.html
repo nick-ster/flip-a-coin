@@ -245,9 +245,9 @@
   </div>
 </div>
 
-<!-- Flip Again screenshot (clickable) -->
+<!-- Flip Again screenshot (clickable, swaps during flip) -->
 <div style="position:relative; line-height:0;">
-  <img style="width:100%; display:block;" src="bottom-flipagain.jpg" alt="Flip Again">
+  <img id="flipAgainImg" style="width:100%; display:block; transition: opacity 0.15s ease;" src="bottom-flipagain.jpg" alt="Flip Again">
   <div id="flipAgain" style="position:absolute;top:0;left:0;right:0;bottom:0;cursor:pointer;"></div>
 </div>
 
@@ -260,6 +260,7 @@
   const coinFront = document.getElementById('coinFront');
   const coinBack = document.getElementById('coinBack');
   const flipAgainBtn = document.getElementById('flipAgain');
+  const flipAgainImg = document.getElementById('flipAgainImg');
   let isFlipping = false;
   let flipDirection = 1;
 
@@ -282,6 +283,7 @@
     isFlipping = true;
 
     coinLabel.classList.remove('visible');
+    flipAgainImg.src = 'bottom-flipping.jpg';
 
     const animClass = flipDirection === 1 ? 'flipping-forward' : 'flipping-reverse';
     flipDirection *= -1;
@@ -302,6 +304,7 @@
     setTimeout(() => {
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
       coinLabel.classList.add('visible');
+      flipAgainImg.src = 'bottom-flipagain.jpg';
 
       coin.classList.remove('flipping-forward', 'flipping-reverse');
       isFlipping = false;
