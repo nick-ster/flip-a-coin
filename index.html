@@ -46,17 +46,19 @@
     position: relative;
     transform-style: preserve-3d;
   }
-  /* Google sprite-sheet coin — exact replica */
+  /* Google sprite-sheet coin */
   .coin-container {
     width: 150px; height: 150px;
     margin: 0 auto 0;
     position: relative;
     overflow: hidden;
+    perspective: 400px;
   }
   .coin-sprite {
     width: 150px;
     height: 2699px;
     display: block;
+    transform-origin: center 75px; /* center of visible frame */
   }
   .coin-sprite.flipping-forward {
     animation: coinFlipForward 1.4s steps(1) none;
@@ -65,9 +67,31 @@
     animation: coinFlipReverse 1.4s steps(1) none;
   }
 
-  /* 3 full cycles forward (54 steps total), then hold on frame 0 */
+  /* Wrapper that does the X-axis tumble (upside down & back) */
+  .coin-container.flipping-forward {
+    animation: tumbleForward 1.4s ease-in-out forwards;
+  }
+  .coin-container.flipping-reverse {
+    animation: tumbleReverse 1.4s ease-in-out forwards;
+  }
+  @keyframes tumbleForward {
+    0%   { transform: perspective(400px) rotateX(0deg); }
+    30%  { transform: perspective(400px) rotateX(-120deg); }
+    60%  { transform: perspective(400px) rotateX(-240deg); }
+    85%  { transform: perspective(400px) rotateX(-340deg); }
+    100% { transform: perspective(400px) rotateX(-360deg); }
+  }
+  @keyframes tumbleReverse {
+    0%   { transform: perspective(400px) rotateX(0deg); }
+    30%  { transform: perspective(400px) rotateX(120deg); }
+    60%  { transform: perspective(400px) rotateX(240deg); }
+    85%  { transform: perspective(400px) rotateX(340deg); }
+    100% { transform: perspective(400px) rotateX(360deg); }
+  }
+
+  /* Sprite steps through frames (Y-axis spin) simultaneously */
+  /* 3 full cycles forward */
   @keyframes coinFlipForward {
-    /* cycle 1 */
     0%     { transform: translateY(0px); }
     1.85%  { transform: translateY(-150px); }
     3.7%   { transform: translateY(-300px); }
@@ -86,7 +110,6 @@
     27.75% { transform: translateY(-2249px); }
     29.6%  { transform: translateY(-2399px); }
     31.45% { transform: translateY(-2549px); }
-    /* cycle 2 — back to top */
     33.3%  { transform: translateY(0px); }
     35.15% { transform: translateY(-150px); }
     37%    { transform: translateY(-300px); }
@@ -105,7 +128,6 @@
     61.05% { transform: translateY(-2249px); }
     62.9%  { transform: translateY(-2399px); }
     64.75% { transform: translateY(-2549px); }
-    /* cycle 3 — landing cycle (slower) */
     66.6%  { transform: translateY(0px); }
     69.5%  { transform: translateY(-150px); }
     72.4%  { transform: translateY(-300px); }
@@ -121,9 +143,8 @@
     100%   { transform: translateY(0px); }
   }
 
-  /* 3 full cycles reverse (bottom→top), land on last frame */
+  /* 3 full cycles reverse */
   @keyframes coinFlipReverse {
-    /* cycle 1 */
     0%     { transform: translateY(-2549px); }
     1.85%  { transform: translateY(-2399px); }
     3.7%   { transform: translateY(-2249px); }
@@ -142,7 +163,6 @@
     27.75% { transform: translateY(-300px); }
     29.6%  { transform: translateY(-150px); }
     31.45% { transform: translateY(0px); }
-    /* cycle 2 */
     33.3%  { transform: translateY(-2549px); }
     35.15% { transform: translateY(-2399px); }
     37%    { transform: translateY(-2249px); }
@@ -161,7 +181,6 @@
     61.05% { transform: translateY(-300px); }
     62.9%  { transform: translateY(-150px); }
     64.75% { transform: translateY(0px); }
-    /* cycle 3 — slower landing */
     66.6%  { transform: translateY(-2549px); }
     69.5%  { transform: translateY(-2399px); }
     72.4%  { transform: translateY(-2249px); }
@@ -317,14 +336,19 @@
     const animClass = flipDirection === 1 ? 'flipping-forward' : 'flipping-reverse';
     flipDirection *= -1;
 
+    const container = document.querySelector('.coin-container');
     coin.classList.remove('flipping-forward', 'flipping-reverse');
+    container.classList.remove('flipping-forward', 'flipping-reverse');
     coin.style.transform = '';
+    container.style.transform = '';
     void coin.offsetWidth;
     coin.classList.add(animClass);
+    container.classList.add(animClass);
 
     setTimeout(() => {
       coin.classList.remove('flipping-forward', 'flipping-reverse');
-      // Frame 0 = face-on heads, frame 9 (y=-1349) = face-on tails
+      container.classList.remove('flipping-forward', 'flipping-reverse');
+      container.style.transform = 'perspective(400px) rotateX(0deg)';
       coin.style.transform = result === 'heads' ? 'translateY(0px)' : 'translateY(-1349px)';
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
       coinLabel.classList.add('visible');
