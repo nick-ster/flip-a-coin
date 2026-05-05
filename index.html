@@ -58,6 +58,18 @@
     height: 2699px;
     display: block;
   }
+  /* Google sprite-sheet coin */
+  .coin-container {
+    width: 150px; height: 150px;
+    margin: 0 auto 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .coin-sprite {
+    width: 150px;
+    height: 2699px;
+    display: block;
+  }
   .coin-sprite.flip-fwd-heads {
     animation: flipFwdHeads 1.8s steps(1) forwards;
   }
@@ -490,6 +502,18 @@
   let isFlipping = false;
   let flipDirection = 1;
 
+  // Sprite: 18 frames, 150px each. Frame 0=heads, frame 9=tails
+  const TOTAL_FRAMES = 18;
+  const FRAME_H = 150;
+  const HEADS_FRAME = 0;
+  const TAILS_FRAME = 9; // y = -1350px (closest flat tails frame)
+  let currentFrame = 0;
+
+  function setFrame(f) {
+    currentFrame = ((f % TOTAL_FRAMES) + TOTAL_FRAMES) % TOTAL_FRAMES;
+    coin.style.transform = `translateY(-${currentFrame * FRAME_H}px)`;
+  }
+
   function flip(result) {
     if (isFlipping) return;
     isFlipping = true;
@@ -497,22 +521,53 @@
     coinLabel.classList.remove('visible');
     flipAgainImg.src = 'bottom-flipping.jpg';
 
-    const dir = flipDirection === 1 ? 'fwd' : 'rev';
+    const dir = flipDirection; // 1=forward, -1=reverse
     flipDirection *= -1;
-    const animClass = `flip-${dir}-${result}`;
 
-    coin.classList.remove('flip-fwd-heads','flip-fwd-tails','flip-rev-heads','flip-rev-tails');
-    coin.style.transform = '';
-    void coin.offsetWidth;
-    coin.classList.add(animClass);
+    const targetFrame = result === 'heads' ? HEADS_FRAME : TAILS_FRAME;
+    // Total frames to spin: 3.5 full rotations = 63 frames
+    // Last frame lands exactly on target
+    const totalSpins = 3; // full rotations
+    const baseFrames = totalSpins * TOTAL_FRAMES; // 54 frames fast
+    // Calculate extra frames to reach target from current
+    let extra;
+    if (dir === 1) {
+      extra = ((targetFrame - (currentFrame + baseFrames % TOTAL_FRAMES)) % TOTAL_FRAMES + TOTAL_FRAMES) % TOTAL_FRAMES;
+    } else {
+      extra = ((currentFrame - baseFrames % TOTAL_FRAMES - targetFrame) % TOTAL_FRAMES + TOTAL_FRAMES) % TOTAL_FRAMES;
+    }
+    const totalFrames = baseFrames + extra;
 
-    setTimeout(() => {
-      // Animation already ends on correct frame via forwards fill — no snap needed
-      coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
-      coinLabel.classList.add('visible');
-      flipAgainImg.src = 'bottom-flipagain.jpg';
-      isFlipping = false;
-    }, 1800);
+    // Easing: fast start, decelerate over last 18 frames
+    let frame = 0;
+    const fastFrames = totalFrames - 18;
+    const FAST_INTERVAL = 35; // ms per frame fast
+    const SLOW_START = 45;
+    const SLOW_END = 120;
+
+    function step() {
+      if (frame < totalFrames) {
+        setFrame(dir === 1 ? currentFrame + frame : currentFrame - frame);
+        frame++;
+        // Decelerate in last 18 frames
+        let delay;
+        if (frame < fastFrames) {
+          delay = FAST_INTERVAL;
+        } else {
+          const progress = (frame - fastFrames) / 18;
+          delay = SLOW_START + (SLOW_END - SLOW_START) * progress;
+        }
+        setTimeout(step, delay);
+      } else {
+        // Snap exactly to target
+        setFrame(targetFrame);
+        coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
+        coinLabel.classList.add('visible');
+        flipAgainImg.src = 'bottom-flipagain.jpg';
+        isFlipping = false;
+      }
+    }
+    step();
   }
 
 
