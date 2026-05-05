@@ -89,9 +89,14 @@
   }
 
   .coin-label {
-    font-size: 28px; font-weight: 400; color: #fff;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
-    letter-spacing: 0.3px;
+    font-size: 22px; font-weight: 500; color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    letter-spacing: 0.2px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .coin-label.visible {
+    opacity: 1;
   }
 
   /* Touch zones */
@@ -201,8 +206,8 @@
 <!-- Flip Again bar -->
 <div id="flipAgain" style="
   text-align:center; padding:14px 16px;
-  font-size:13.5px; font-weight:500;
-  color:#1a73e8; letter-spacing:0.8px;
+  font-size:13px; font-weight:700;
+  color:#1558d6; letter-spacing:1px;
   cursor:pointer; border-bottom:1px solid #e8eaed;
   background:#fff; font-family:arial,sans-serif;
   min-height:48px; display:flex; align-items:center; justify-content:center;
@@ -223,9 +228,11 @@
     if (isFlipping) return;
     isFlipping = true;
 
-    // Show "Flipping..."
-    coinLabel.textContent = 'Flipping...';
-    flipAgainBtn.textContent = 'Flipping...';
+    // Hide label, update flip again button text
+    coinLabel.classList.remove('visible');
+    flipAgainBtn.textContent = 'FLIPPING...';
+    flipAgainBtn.style.color = '#5f6368';
+    flipAgainBtn.style.fontWeight = '400';
 
     // Alternate direction
     const animClass = flipDirection === 1 ? 'flipping-forward' : 'flipping-reverse';
@@ -241,8 +248,12 @@
     }, 450);
 
     setTimeout(() => {
+      // Fade in result label
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
+      coinLabel.classList.add('visible');
       flipAgainBtn.textContent = 'FLIP AGAIN';
+      flipAgainBtn.style.color = '#1558d6';
+      flipAgainBtn.style.fontWeight = '700';
       coin.classList.remove('flipping-forward', 'flipping-reverse');
       isFlipping = false;
     }, 900);
