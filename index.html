@@ -52,13 +52,11 @@
     margin: 0 auto 0;
     position: relative;
     overflow: hidden;
-    perspective: 400px;
   }
   .coin-sprite {
     width: 150px;
     height: 2699px;
     display: block;
-    transform-origin: center 75px; /* center of visible frame */
   }
   .coin-sprite.flipping-forward {
     animation: coinFlipForward 1.4s steps(1) none;
@@ -67,29 +65,6 @@
     animation: coinFlipReverse 1.4s steps(1) none;
   }
 
-  /* Wrapper that does the X-axis tumble (upside down & back) */
-  .coin-container.flipping-forward {
-    animation: tumbleForward 1.4s ease-in-out forwards;
-  }
-  .coin-container.flipping-reverse {
-    animation: tumbleReverse 1.4s ease-in-out forwards;
-  }
-  @keyframes tumbleForward {
-    0%   { transform: perspective(400px) rotateX(0deg); }
-    30%  { transform: perspective(400px) rotateX(-120deg); }
-    60%  { transform: perspective(400px) rotateX(-240deg); }
-    85%  { transform: perspective(400px) rotateX(-340deg); }
-    100% { transform: perspective(400px) rotateX(-360deg); }
-  }
-  @keyframes tumbleReverse {
-    0%   { transform: perspective(400px) rotateX(0deg); }
-    30%  { transform: perspective(400px) rotateX(120deg); }
-    60%  { transform: perspective(400px) rotateX(240deg); }
-    85%  { transform: perspective(400px) rotateX(340deg); }
-    100% { transform: perspective(400px) rotateX(360deg); }
-  }
-
-  /* Sprite steps through frames (Y-axis spin) simultaneously */
   /* 3 full cycles forward */
   @keyframes coinFlipForward {
     0%     { transform: translateY(0px); }
@@ -336,19 +311,13 @@
     const animClass = flipDirection === 1 ? 'flipping-forward' : 'flipping-reverse';
     flipDirection *= -1;
 
-    const container = document.querySelector('.coin-container');
     coin.classList.remove('flipping-forward', 'flipping-reverse');
-    container.classList.remove('flipping-forward', 'flipping-reverse');
     coin.style.transform = '';
-    container.style.transform = '';
     void coin.offsetWidth;
     coin.classList.add(animClass);
-    container.classList.add(animClass);
 
     setTimeout(() => {
       coin.classList.remove('flipping-forward', 'flipping-reverse');
-      container.classList.remove('flipping-forward', 'flipping-reverse');
-      container.style.transform = 'perspective(400px) rotateX(0deg)';
       coin.style.transform = result === 'heads' ? 'translateY(0px)' : 'translateY(-1349px)';
       coinLabel.textContent = result === 'heads' ? 'Heads' : 'Tails';
       coinLabel.classList.add('visible');
